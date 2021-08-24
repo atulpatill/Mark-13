@@ -1,120 +1,241 @@
-var dateInput = document.querySelector("#bday-input")
-var showBtn = document.querySelector("#show-btn")
-var output = document.querySelector("#result")
+const bdayInput = document.querySelector(".bday-input");
+const showBtn = document.querySelector(".show-btn");
+const output = document.querySelector("#output");
+showBtn.addEventListener("click", clickHandler);
 
-function clickHandler(){
-     console.log(dateInput.value)
+function reverseString(str) {
+  var revStr = str.split("").reverse().join("");
+  return revStr;
 }
 
-showBtn.addEventListener("click", clickHandler)
-
-
-var date ={
-    day: 05,
-    month: 9,
-    year: 2021
-  }
-  
-
-
-function reverseElement(str){
-    var listOfChars = str.split('');
-    var reverseListOfChars = listOfChars.reverse();
-    var reversedStr = reverseListOfChars.join('');
-    return reversedStr
-}
-// Here we first reversed the string element by using function and then used another function to compare reversed string with input string...If both are same then string is palidrome.
-
-function isPalidrome(str){
-    var reverse = reverseElement(str)
-
-    // if(str=== reverse){
-    //     return true
-    // }else{
-    //     return false
-    // }
-
-    return str === reverse
+function isStrPalindrome(str) {
+  var reversedStr = reverseString(str);
+  return str === reversedStr;
 }
 
-
-
-// console.log(isPalidrome('rama'))
-// console.log(isPalidrome('oppo'))
-// console.log(isPalidrome('racecar'))
-// console.log(isPalidrome('mom'))
-
-
-
-
-  function convertDateToString(date){
-    var dateStr = { day:'' , month:'',year:'' }
-
-    var date ={
-        day: 2,
-        month: 11,
-        year: 2020
-      }
-      
-    
-    if (date.day < 10){
-      dateStr.day =   '0' + date.day //adding string into number results string...thats why we dont use .toString here
-    }else {
-      dateStr.day = date.day.toString()
-    }
-    if (date.month < 10){
-      dateStr.month =  '0' + date.month
-    }else {
-      dateStr.month = date.month.toString()
-    }
-    dateStr.year = date.year.toString()
-    return dateStr
-    
-  
+function dateToString(userDate) {
+  var dateInStr = {
+    day: "",
+    month: "",
+    year: "",
+  };
+  if (userDate.day < 10) {
+    dateInStr.day = "0" + userDate.day;
+  } else {
+    dateInStr.day = userDate.day.toString();
   }
-  console.log(convertDateToString(date))
-  
-//    var dateStrc =convertDateToString(date)
-    
-//    var c = dateStrc.year.slice(2)
-//    console.log(c)
-
-
-//   var a = ["ram","shyam", "om","krishna","ravi"] 
-
-//   var b = a.slice(3)
-//   console.log(b)
-
-function getAllDateFormats(date){
-    var dateStr = convertDateToString(date);
-  
-    var ddmmyyyy = dateStr.day + dateStr.month + dateStr.year
-    var mmddyyyy = dateStr.month + dateStr.day + dateStr.year
-    var yyyymmdd = dateStr.year + dateStr.month + dateStr.day
-    var ddmmyy = dateStr.day + dateStr.month + dateStr.year.slice(2)
-    var mmddyy = dateStr.month + dateStr.day + dateStr.year.slice(2) 
-    var yymmdd = dateStr.year.slice(2) + dateStr.month + dateStr.day
-  
-    return [ddmmyyyy,mmddyyyy,yyyymmdd,ddmmyy,mmddyy,yymmdd]
+  if (userDate.month < 10) {
+    dateInStr.month = "0" + userDate.month;
+  } else {
+    dateInStr.month = userDate.month.toString();
   }
-  
-  console.log(getAllDateFormats(date))
+  dateInStr.year = userDate.year.toString();
 
-  function checkPalidromeForAllDateFormats(date){
-      var listOfPalidrome = getAllDateFormats(date);
-      var flag = false;  //adding default flag..we are returning this variable so.
+  return dateInStr;
+}
 
-      for(var i=0;i < listOfPalidrome.length ; i++){
-         if(isPalidrome(listOfPalidrome[i])){
-             flag = true;
-             break;
-         }
+function getAlldateFormats(userDate) {
+  var ddmmyyyy = userDate.day + userDate.month + userDate.year;
+  var mmddyyyy = userDate.month + userDate.day + userDate.year;
+  var yyyymmdd = userDate.year + userDate.month + userDate.day;
+  var ddmmyy = userDate.day + userDate.month + userDate.year.slice(-2);
+  var mmddyy = userDate.month + userDate.day + userDate.year.slice(-2);
+  var yyddmm = userDate.year.slice(-2) + userDate.month + userDate.day;
+  return [ddmmyyyy, mmddyyyy, yyyymmdd, ddmmyy, mmddyy, yyddmm];
+}
+
+function checkPalindromeForAllFormats(userDate) {
+  var dateFormatList = getAlldateFormats(userDate);
+  var palindromeList = [];
+  for (var i = 0; i < dateFormatList.length; i++) {
+    var ans = isStrPalindrome(dateFormatList[i]);
+    palindromeList.push(ans);
+  }
+  return palindromeList;
+}
+
+function isLeapYear(birthYear) {
+  if ((birthYear % 4 == 0 && birthYear % 100 != 0) || birthYear % 400 == 0) {
+    return true;
+  } else {
+    false;
+  }
+}
+
+function getNextDate(userDate) {
+  var day = userDate.day + 1;
+  var month = userDate.month;
+  var year = userDate.year;
+
+  var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  if (month == 2) {
+    if (isLeapYear(year)) {
+      if (day > 29) {
+        day = 1;
+        month++;
+      } else {
+        if (day > 28) {
+          day = 1;
+          month++;
         }
-        return flag
+      }
+    }
+  } else {
+    if (day > daysInMonth[month - 1]) {
+      day = 1;
+      month++;
+    }
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
   }
-  console.log (checkPalidromeForAllDateFormats())
+  return {
+    day: day,
+    month: month,
+    year: year,
+  };
+}
 
+function nextPalindromeDate(userDate) {
+  var count1 = 0;
+  var nextDate = getNextDate(userDate);
 
+  while (1) {
+    count1++;
+    var dateStr = dateToString(nextDate);
+    var ansList = checkPalindromeForAllFormats(dateStr);
+
+    for (var i = 0; i < ansList.length; i++) {
+      if (ansList[i]) {
+        return [count1, nextDate];
+      }
+    }
+    nextDate = getNextDate(nextDate);
+  }
+}
+
+function getPrevDate(userDate) {
+  var day = userDate.day - 1;
+  var month = userDate.month;
+  var year = userDate.year;
+
+  var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  if (day == 0) {
+    month--;
+
+    if (month == 0) {
+      month = 12;
+      day = 31;
+      year--;
+    } else if (month == 2) {
+      if (isLeapYear(year)) {
+        day = 29;
+      } else {
+        day = 28;
+      }
+    } else {
+      day = daysInMonth[month - 1];
+    }
+  }
+
+  return {
+    day: day,
+    month: month,
+    year: year,
+  };
+}
+
+function getPrevPalindromeDate(userDate) {
+  var prevDate = getPrevDate(userDate);
+  var count2 = 0;
+
+  while (1) {
+    count2++;
+    var dateStr = dateToString(prevDate);
+    var ansList = checkPalindromeForAllFormats(dateStr);
+
+    for (var i = 0; i < ansList.length; i++) {
+      if (ansList[i]) {
+        return [count2, prevDate];
+      }
+    }
+    prevDate = getPrevDate(prevDate);
+  }
+}
+
+function clickHandler(event) {
+  // console.log(bdayInput.value)
+  var bdayStr = bdayInput.value;
+
+  if (bdayStr !== "") {
+    var userDate = bdayStr.split("-");
+    var yyyy = userDate[0];
+    var mm = userDate[1];
+    var dd = userDate[2];
+
+    var userDate = {
+      day: Number(dd),
+      month: Number(mm),
+      year: Number(yyyy),
+    };
+
+    var dateStr = dateToString(userDate);
+    var dateList = checkPalindromeForAllFormats(dateStr);
+    var yesPalindrome = false;
+
+    for (let i = 0; i < dateList.length; i++) {
+      if (dateList[i]) {
+        yesPalindrome = true;
+        break;
+      }
+    }
+
+    if (!yesPalindrome) {
+      const [count1, nextDate] = nextPalindromeDate(userDate);
+      const [count2, prevDate] = getPrevPalindromeDate(userDate);
+      let message = "";
+      if (count1 < count2) {
+        message = 
+          "Uff!!!The next Palindrome date is " +
+          nextDate.day +
+          "-" +
+          nextDate.month +
+          "-" +
+          nextDate.year +
+          " , you missed by " +
+          count1 +
+          " days";
+        showOutput(message);
+      } else {
+        message =
+          "Uff!!! The next Palindrome date is " +
+          prevDate.day +
+          "-" +
+          prevDate.month +
+          "-" +
+          prevDate.year +
+          " ,Ohh you missed by " +
+          count2 +
+          " days";
+        showOutput(message);
+      }
+    } else {
+      message = "Hurray! Your Birthday is palindrome 😀";
+      showOutput(message);
+    }
+  }else{
+    message = "Ohh! Please enter your Birth Date!";
+    showOutput(message)
+  }
+}
+
+function showOutput(message) {
+  output.innerText = message;
+}
+  
 
 
   
