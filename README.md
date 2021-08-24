@@ -6,4 +6,4 @@
  3. This is build by using Html,CSS,JavaScript.
 
  * Wanna try?
-  You can check it out [here]()
+  You can check it out [here](https://birthday-palindrome-app.netlify.app/)
