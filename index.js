@@ -208,6 +208,8 @@ function clickHandler(event) {
           " , you missed by " +
           count1 +
           " days";
+          output.style.color ="pink"
+    output.style.fontSize ="25px";
         showOutput(message);
       } else {
         message =
@@ -220,14 +222,20 @@ function clickHandler(event) {
           " ,Ohh you missed by " +
           count2 +
           " days";
+          output.style.color ="pink"
+    output.style.fontSize ="25px";
         showOutput(message);
       }
     } else {
       message = "Hurray! Your Birthday is palindrome 😀";
+      output.style.color ="pink"
+    output.style.fontSize ="25px";
       showOutput(message);
     }
   }else{
     message = "Ohh! Please enter your Birth Date!";
+    output.style.color ="pink"
+    output.style.fontSize ="25px";
     showOutput(message)
   }
 }
